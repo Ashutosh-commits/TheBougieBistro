@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FoodieExpress - Food Delivered Fast</title>
+    <!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<link href="style.css" rel="stylesheet">
+<!-- FontAwesome (for icons like Instagram, Facebook, etc.) -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  
+</head>
+<body>
+    <header>
+        <nav class="container">
+           <div class="logo">
+    <img src="assets/img/gallery/Booooo.png" alt="FoodieExpress Logo" class="logo-img" height="100px" width="100px" />
+    <span class="logo-text">BougieBistro</span>
+</div>
+
+            <div class="nav-links">
+                <a href="#" class="nav-link">Home</a>
+                <a href="#" class="nav-link">Restaurants</a>
+                <a href="#" class="nav-link">About</a>
+                <button class="cart-btn" onclick="toggleCart()">
+                    🛒 Cart
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Delicious Food Delivered</h1>
+            <p>Order from your favorite restaurants and get it delivered hot & fresh!</p>
+            <div class="search-bar">
+                <input type="text" class="search-input" placeholder="Search for restaurants, cuisine, or dishes..." id="searchInput">
+                <button class="search-btn" onclick="searchRestaurants()">Search</button>
+            </div>
+        </div>
+    </section>
+
+    <main class="container">
+        <div class="filters">
+            <button class="filter-btn active" onclick="filterRestaurants('all')">All</button>
+            <button class="filter-btn" onclick="filterRestaurants('pizza')">Pizza</button>
+            <button class="filter-btn" onclick="filterRestaurants('indian')">Indian</button>
+            <button class="filter-btn" onclick="filterRestaurants('chinese')">Chinese</button>
+            <button class="filter-btn" onclick="filterRestaurants('fast-food')">Fast Food</button>
+            <button class="filter-btn" onclick="filterRestaurants('desserts')">Desserts</button>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Loading delicious restaurants...</p>
+        </div>
+
+        <div class="restaurants-grid" id="restaurantsGrid">
+            <!-- Restaurants will be populated here -->
+        </div>
+    </main>
+
+    <!-- Menu Modal -->
+    <div class="modal" id="menuModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="close-btn" onclick="closeMenu()">&times;</button>
+                <h2 id="modalRestaurantName">Restaurant Menu</h2>
+                <p id="modalRestaurantInfo">Choose your favorite dishes</p>
+            </div>
+            <div class="menu-items" id="menuItems">
+                <!-- Menu items will be populated here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Your Order</h3>
+            <button class="close-btn" onclick="toggleCart()">&times;</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <p style="text-align: center; color: #666; padding: 2rem;">Your cart is empty</p>
+        </div>
+        <div class="cart-total">
+            <h3>Total: ₹<span id="cartTotal">0</span></h3>
+            <button class="checkout-btn" onclick="checkout()">Proceed to Checkout</button>
+        </div>
+    </div>
+<footer class="footer">
+    
+   <section class="py-0 pt-5 bg-dark"> <!-- Adjust bg-dark if bg-1000 is not defined -->
+
+  <div class="container">
+    <!-- OUR TOP CITIES -->
+    <div class="row">
+      <div class="col-12">
+        <h5 class="lh-lg fw-bold text-white">OUR TOP CITIES</h5>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-5">
+        <ul class="list-unstyled mb-0">
+          <li class="lh-lg"><a class="text-light text-decoration-none" href="#!">Bhopal</a></li>
+          <li class="lh-lg"><a class="text-light text-decoration-none" href="#!">Visakhapatnam</a></li>
+          <li class="lh-lg"><a class="text-light text-decoration-none" href="#!">Nagpur</a></li>
+          <li class="lh-lg"><a class="text-light text-decoration-none" href="#!">Indore</a></li>
+          <li class="lh-lg"><a class="text-light text-decoration-none" href="#!">Surat</a></li>
+        </ul>
+      </div>
+
+      <div class="col-12 col-md-6 col-lg-5">
+        <ul class="list-unstyled mb-0">
+          <li class="lh-lg"><a class="text-light text-decoration-none" href="#!">Patna</a></li>
+          <li class="lh-lg"><a class="text-light text-decoration-none" href="#!">Coimbatore</a></li>
+          <li class="lh-lg"><a class="text-light text-decoration-none" href="#!">Thiruvananthapuram</a></li>
+          <li class="lh-lg"><a class="text-light text-decoration-none" href="#!">Vadodara</a></li>
+          <li class="lh-lg"><a class="text-light text-decoration-none" href="#!">Ranchi</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Divider -->
+    <hr class="text-light my-4" />
+
+    <!-- Footer Links -->
+    <div class="row">
+      <div class="col-6 col-md-4 col-lg-3 col-xxl-2 mb-3">
+        <h5 class="text-white fw-bold">COMPANY</h5>
+        <ul class="list-unstyled">
+          <li><a class="text-light text-decoration-none" href="#!">About Us</a></li>
+          <li><a class="text-light text-decoration-none" href="#!">Team</a></li>
+          <li><a class="text-light text-decoration-none" href="#!">Careers</a></li>
+          <li><a class="text-light text-decoration-none" href="#!">Blog</a></li>
+        </ul>
+      </div>
+
+      <div class="col-6 col-md-4 col-lg-3 col-xxl-2 mb-3">
+        <h5 class="text-white fw-bold">CONTACT</h5>
+        <ul class="list-unstyled">
+          <li><a class="text-light text-decoration-none" href="#!">Help & Support</a></li>
+          <li><a class="text-light text-decoration-none" href="#!">Partner with us</a></li>
+          <li><a class="text-light text-decoration-none" href="#!">Ride with us</a></li>
+        </ul>
+      </div>
+
+      <div class="col-6 col-md-4 col-lg-3 col-xxl-2 mb-3">
+        <h5 class="text-white fw-bold">LEGAL</h5>
+        <ul class="list-unstyled">
+          <li><a class="text-light text-decoration-none" href="#!">Terms & Conditions</a></li>
+          <li><a class="text-light text-decoration-none" href="#!">Refund & Cancellation</a></li>
+          <li><a class="text-light text-decoration-none" href="#!">Privacy Policy</a></li>
+          <li><a class="text-light text-decoration-none" href="#!">Cookie Policy</a></li>
+        </ul>
+      </div>
+
+      <!-- FOLLOW US -->
+      <div class="col-12 col-md-8 col-lg-6 col-xxl-4 mb-3">
+        <h5 class="text-white fw-bold">FOLLOW US</h5>
+        <!-- Social icons -->
+        <div class="my-3">
+          <!-- Add FontAwesome or Bootstrap Icons CDN to make these work -->
+          <a href="#!" class="text-light fs-4 me-3"><i class="fab fa-instagram"></i></a>
+          <a href="#!" class="text-light fs-4 me-3"><i class="fab fa-facebook"></i></a>
+          <a href="#!" class="text-light fs-4"><i class="fab fa-twitter"></i></a>
+        </div>
+        <h6 class="text-light my-3">Receive exclusive offers and discounts in your mailbox</h6>
+        <form class="row g-2">
+          <div class="col-auto">
+            <input type="email" class="form-control bg-secondary text-white" placeholder="Enter Email">
+          </div>
+          <div class="col-auto">
+            <button type="submit" class="btn btn-primary">SignIn</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <hr class="border border-light" />
+
+    <!-- Footer Bottom -->
+    <div class="row text-center text-md-start">
+      <div class="col-md-6">
+        <p class="text-light mb-0">&copy; Your Company, 2025. All rights reserved.</p>
+      </div>
+      <div class="col-md-6 text-md-end">
+        <p class="text-light mb-0">Made with ❤️ by <strong>Aanchal, Ashutosh, Harsh, Anupam</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+  </footer>
+    <script>
+        // Sample restaurant data
+        const restaurants = [
+            {
+                id: 1,
+                name: "Pizza Palace",
+                category: "pizza",
+                rating: 4.5,
+                time: "30-45 min",
+                price: "₹200 for two",
+                tags: ["Pizza", "Italian", "Fast Food"],
+            emoji: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGl6emF8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=600&q=60 ",
+
+                menu: [
+                    {id: 1, name: "Margherita Pizza", price: 250, description: "Fresh tomato sauce, mozzarella, basil"},
+                    {id: 2, name: "Pepperoni Pizza", price: 320, description: "Pepperoni, mozzarella, tomato sauce"},
+                    {id: 3, name: "Veggie Supreme", price: 380, description: "Mixed vegetables, cheese, herbs"},
+                    {id: 4, name: "Garlic Bread", price: 120, description: "Fresh baked bread with garlic butter"}
+                ]
+            },
+            {
+                id: 2,
+                name: "Spice Garden",
+                category: "indian",
+                rating: 4.2,
+                time: "25-40 min",
+                price: "₹300 for two",
+                tags: ["Indian", "Curry", "Vegetarian"],
+                emoji: "https://images.unsplash.com/photo-1610057099443-fde8c4d50f91?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80",
+                menu: [
+                    {id: 5, name: "Butter Chicken", price: 280, description: "Creamy tomato curry with tender chicken"},
+                    {id: 6, name: "Dal Makhani", price: 220, description: "Rich black lentils with cream and spices"},
+                    {id: 7, name: "Paneer Tikka", price: 260, description: "Grilled cottage cheese with spices"},
+                    {id: 8, name: "Naan Bread", price: 60, description: "Fresh baked Indian bread"}
+                ]
+            },
+            {
+                id: 3,
+                name: "Dragon Wok",
+                category: "chinese",
+                rating: 4.3,
+                time: "20-35 min",
+                price: "₹250 for two",
+                tags: ["Chinese", "Noodles", "Stir Fry"],
+                emoji: "https://media.istockphoto.com/id/1363081253/photo/asian-fried-rice-with-mushroom-and-vegetables-directly-above-photo.webp?a=1&b=1&s=612x612&w=0&k=20&c=y29Qx8DGkoQXFRR9yzrFx194Uk8NdYFeu75Z2MZZ_OA=",
+                menu: [
+                    {id: 9, name: "Chicken Fried Rice", price: 180, description: "Wok-fried rice with chicken and vegetables"},
+                    {id: 10, name: "Hakka Noodles", price: 160, description: "Stir-fried noodles with vegetables"},
+                    {id: 11, name: "Sweet & Sour Chicken", price: 240, description: "Crispy chicken in tangy sauce"},
+                    {id: 12, name: "Spring Rolls", price: 120, description: "Crispy vegetable spring rolls"}
+                ]
+            },
+            {
+                id: 4,
+                name: "Burger Junction",
+                category: "fast-food",
+                rating: 4.0,
+                time: "15-25 min",
+                price: "₹150 for two",
+                tags: ["Burgers", "Fast Food", "American"],
+                emoji: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8YnVyZ2VyfGVufDB8fDB8fHww",
+                menu: [
+                    {id: 13, name: "Classic Burger", price: 150, description: "Beef patty, lettuce, tomato, onion"},
+                    {id: 14, name: "Chicken Burger", price: 170, description: "Grilled chicken breast with mayo"},
+                    {id: 15, name: "Veggie Burger", price: 140, description: "Plant-based patty with fresh veggies"},
+                    {id: 16, name: "French Fries", price: 80, description: "Crispy golden fries"}
+                ]
+            },
+            {
+                id: 5,
+                name: "Sweet Treats",
+                category: "desserts",
+                rating: 4.7,
+                time: "10-20 min",
+                price: "₹100 for two",
+                tags: ["Desserts", "Ice Cream", "Cakes"],
+                emoji: "https://images.unsplash.com/photo-1551024506-0bccd828d307?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZGVzc2VydHN8ZW58MHx8MHx8fDA%3D",
+                menu: [
+                    {id: 17, name: "Chocolate Cake", price: 200, description: "Rich chocolate cake with cream"},
+                    {id: 18, name: "Vanilla Ice Cream", price: 80, description: "Creamy vanilla ice cream"},
+                    {id: 19, name: "Strawberry Cheesecake", price: 180, description: "Fresh strawberry cheesecake"},
+                    {id: 20, name: "Chocolate Brownie", price: 120, description: "Warm chocolate brownie with nuts"}
+                ]
+            },
+            {
+                id: 6,
+                name: "Taco Fiesta",
+                category: "mexican",
+                rating: 4.1,
+                time: "20-30 min",
+                price: "₹180 for two",
+                tags: ["Mexican", "Tacos", "Spicy"],
+                emoji: "https://images.unsplash.com/photo-1517984055083-fd6e1e788e54?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fGdyaWxsZWQlMjBjaGlja2VufGVufDB8fDB8fHww",
+                menu: [
+                    {id: 21, name: "Chicken Tacos", price: 160, description: "Grilled chicken with salsa and cheese"},
+                    {id: 22, name: "Beef Burrito", price: 200, description: "Wrapped beef with beans and rice"},
+                    {id: 23, name: "Veggie Quesadilla", price: 140, description: "Grilled tortilla with cheese and vegetables"},
+                    {id: 24, name: "Nachos", price: 120, description: "Crispy chips with cheese and salsa"}
+                ]
+            }
+        ];
+
+        // Cart functionality
+        let cart = [];
+        let currentFilter = 'all';
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', function() {
+            displayRestaurants(restaurants);
+            updateCartCount();
+        });
+
+        // Display restaurants
+   function displayRestaurants(restaurantList) {
+    const grid = document.getElementById('restaurantsGrid');
+    
+    if (restaurantList.length === 0) {
+        grid.innerHTML = '<div style="text-align: center; color: white; font-size: 1.2rem; grid-column: 1 / -1;">No restaurants found matching your criteria.</div>';
+        return;
+    }
+
+    grid.innerHTML = restaurantList.map(restaurant => {
+        const isImage = restaurant.emoji.startsWith("http");
+        const imageOrEmoji = isImage
+            ? `<img src="${restaurant.emoji}" alt="${restaurant.name}" class="restaurant-photo"/>`
+            : `<span class="restaurant-emoji">${restaurant.emoji}</span>`;
+
+        return `
+        <div class="restaurant-card fade-in" onclick="openMenu(${restaurant.id})">
+            <div class="restaurant-image">
+                ${imageOrEmoji}
+            </div>
+            <div class="restaurant-info">
+                <div class="restaurant-name">${restaurant.name}</div>
+                <div class="restaurant-details">
+                    <span class="rating">★ ${restaurant.rating}</span>
+                    <span>${restaurant.time}</span>
+                    <span>${restaurant.price}</span>
+                </div>
+                <div class="restaurant-tags">
+                    ${restaurant.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                </div>
+            </div>
+        </div>
+        `;
+    }).join('');
+}
+
+
+
+        // Filter restaurants
+        function filterRestaurants(category) {
+            // Update active filter button
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            currentFilter = category;
+            
+            // Show loading
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('restaurantsGrid').style.display = 'none';
+            
+            // Simulate loading delay
+            setTimeout(() => {
+                const filtered = category === 'all' ? restaurants : restaurants.filter(r => r.category === category);
+                displayRestaurants(filtered);
+                
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('restaurantsGrid').style.display = 'grid';
+            }, 500);
+        }
+
+        // Search restaurants
+        function searchRestaurants() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            if (!query.trim()) {
+                displayRestaurants(restaurants);
+                return;
+            }
+
+            const filtered = restaurants.filter(restaurant => 
+                restaurant.name.toLowerCase().includes(query) ||
+                restaurant.tags.some(tag => tag.toLowerCase().includes(query)) ||
+                restaurant.category.toLowerCase().includes(query)
+            );
+
+            displayRestaurants(filtered);
+        }
+
+        // Open restaurant menu
+        function openMenu(restaurantId) {
+            const restaurant = restaurants.find(r => r.id === restaurantId);
+            if (!restaurant) return;
+
+            document.getElementById('modalRestaurantName').textContent = restaurant.name;
+            document.getElementById('modalRestaurantInfo').textContent = `${restaurant.rating} ★ • ${restaurant.time} • ${restaurant.price}`;
+            
+            const menuItems = document.getElementById('menuItems');
+            menuItems.innerHTML = restaurant.menu.map(item => `
+                <div class="menu-item">
+                    <div class="item-info">
+                        <h4>${item.name}</h4>
+                        <p>${item.description}</p>
+                    </div>
+                    <div style="display: flex; align-items: center;">
+                        <span class="item-price">₹${item.price}</span>
+                        <button class="add-btn" onclick="addToCart(${item.id}, '${item.name}', ${item.price}, '${restaurant.name}')">
+                            Add +
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('menuModal').style.display = 'block';
+        }
+
+        // Close menu modal
+        function closeMenu() {
+            document.getElementById('menuModal').style.display = 'none';
+        }
+
+        // Add item to cart
+        function addToCart(itemId, itemName, price, restaurantName) {
+            const existingItem = cart.find(item => item.id === itemId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: itemId,
+                    name: itemName,
+                    price: price,
+                    restaurant: restaurantName,
+                    quantity: 1
+                });
+            }
+            
+            updateCartDisplay();
+            updateCartCount();
+            
+            // Show success animation
+            const addBtn = event.target;
+            const originalText = addBtn.textContent;
+            addBtn.textContent = 'Added!';
+            addBtn.style.background = '#4CAF50';
+            setTimeout(() => {
+                addBtn.textContent = originalText;
+                addBtn.style.background = '';
+            }, 1000);
+        }
+
+        // Update cart display
+        function updateCartDisplay() {
+            const cartItems = document.getElementById('cartItems');
+            
+            if (cart.length === 0) {
+                cartItems.innerHTML = '<p style="text-align: center; color: #666; padding: 2rem;">Your cart is empty</p>';
+                document.getElementById('cartTotal').textContent = '0';
+                return;
+            }
+
+            cartItems.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <div class="cart-item-info">
+                        <h5>${item.name}</h5>
+                        <p>${item.restaurant}</p>
+                        <p>₹${item.price} each</p>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="qty-btn" onclick="changeQuantity(${item.id}, -1)">-</button>
+                        <span style="margin: 0 0.5rem; font-weight: bold;">${item.quantity}</span>
+                        <button class="qty-btn" onclick="changeQuantity(${item.id}, 1)">+</button>
+                    </div>
+                </div>
+            `).join('');
+
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            document.getElementById('cartTotal').textContent = total;
+        }
+
+        // Change item quantity
+        function changeQuantity(itemId, change) {
+            const item = cart.find(item => item.id === itemId);
+            if (!item) return;
+
+            item.quantity += change;
+            
+            if (item.quantity <= 0) {
+                cart = cart.filter(cartItem => cartItem.id !== itemId);
+            }
+            
+            updateCartDisplay();
+            updateCartCount();
+        }
+
+        // Update cart count badge
+        function updateCartCount() {
+            const count = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = count;
+        }
+
+        // Toggle cart sidebar
+        function toggleCart() {
+            const sidebar = document.getElementById('cartSidebar');
+            sidebar.classList.toggle('open');
+            updateCartDisplay();
+        }
+
+        // Checkout function
+        function checkout() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const orderSummary = cart.map(item => `${item.name} x${item.quantity}`).join(', ');
+            
+            alert(`Order placed successfully!\n\nItems: ${orderSummary}\nTotal: ₹${total}\n\nEstimated delivery time: 30-45 minutes\nThank you for ordering with FoodieExpress!`);
+            
+            // Clear cart
+            cart = [];
+            updateCartDisplay();
+            updateCartCount();
+            toggleCart();
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('menuModal');
+            if (event.target === modal) {
+                closeMenu();
+            }
+            const sidebar = document.getElementById('cartSidebar');
+            if (event.target === sidebar) {
+                toggleCart();
+            }
+        }
+        // Close modals with escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeMenu();
+                toggleCart();
+            }
+        });
+    </script>
+</body>
+</html>
+//FoodieExpress
